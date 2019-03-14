@@ -1,0 +1,31 @@
+{
+  "name": "blocipedia",
+  "version": "1.0.0",
+  "description": "wikipedia-like app",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "export NODE_ENV==test && jasmine",
+    "start": "node src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chizbob/blocipedia.git"
+  },
+  "keywords": [
+    "wiki"
+  ],
+  "author": "Me",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chizbob/blocipedia/issues"
+  },
+  "homepage": "https://github.com/chizbob/blocipedia#readme",
+  "devDependencies": {
+    "jasmine": "^3.3.1",
+    "request": "^2.88.0"
+  },
+  "dependencies": {
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4"
+  }
+}
