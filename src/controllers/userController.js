@@ -25,5 +25,27 @@ module.exports = {
         })
       }
     })
+  },
+
+  signInForm(req, res, next){
+    res.render("user/sign_in")
+  },
+
+  signIn(req, res, next){
+    passport.authenticate("local")(req, res, ()=>{
+      if(!req.user){
+        req.flash("notice", "Sign-in failed. Try again.")
+        res.redirect("/users/sign_in")
+      } else {
+        req.flash("notice", "Sign-in successful.")
+        res.redirect("/")
+      }
+    })
+  },
+
+  signOut(req, res, next){
+    req.logout()
+    req.flash("notice", "Sign-out successful.")
+    res.redirect("/")
   }
 }
