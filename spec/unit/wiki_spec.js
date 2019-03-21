@@ -2,9 +2,9 @@ const User = require("../../src/db/models").User
 const Wiki = require("../../src/db/models").Wiki
 const sequelize = require("../../src/db/models/index").sequelize
 
-describe("Topic", ()=>{
+describe("Wiki", ()=>{
   beforeEach((done)=>{
-    this.topic
+    this.wiki
     this.user
 
     sequelize.sync({force: true})
@@ -13,7 +13,7 @@ describe("Topic", ()=>{
         username: "me",
         email: "me@email.com",
         password: "123456"
-        role: "member"
+        role: "standard"
       })
       .then((user)=>{
         this.user = user

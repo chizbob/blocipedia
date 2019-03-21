@@ -2,7 +2,7 @@ const request = require("request")
 const server = require("../../src/server")
 const base = "http://localhost:3000/wikis/"
 const User = require("../../src/db/models").User
-const Wiki = require("../../src/db/models").wiki
+const Wiki = require("../../src/db/models").Wiki
 const sequelize = require("../../src/db/models/index").sequelize
 
 describe("routes :  wikis", ()=>{
@@ -15,7 +15,7 @@ describe("routes :  wikis", ()=>{
         username: "me",
         email: "me@email.com",
         password: "123456",
-        role: "member"
+        role: "standard"
       })
       .then((user)=>{
         this.user = user
