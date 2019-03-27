@@ -1,5 +1,7 @@
 const User = require("./models").User
 const bcrypt = require("bcryptjs")
+const sgMail = require("@sendgrid/mail")
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 module.exports = {
   createUser(newUser, callback){
@@ -11,7 +13,42 @@ module.exports = {
       password: hashedPassword
     })
     .then((user)=>{
+      const msg = {
+        to: newUser.email,
+        from: "donotreply@email.com",
+        subject: "Upgrade confirmation",
+        text: "Welcome"
+      }
+      sgMail.send(msg)
       callback(null, user)
+    })
+    .catch((err)=>{
+      callback(err)
+    })
+  },
+
+  upgrade(id, callback){
+    return User.findById(id)
+    .then((user)=>{
+      if(!user){
+        return callback("User doesn't exist")
+      } else {
+        return user.updateAttribute({role: "premium"})
+      }
+    })
+    .catch((err)=>{
+      callback(err)
+    })
+  },
+
+  downgrade(id, callback){
+    return User.findById(id)
+    .then((user)=>{
+      if(!user){
+        return callback("User doesn't exist")
+      } else {
+        return user.updateAttribute({role: "standard"})
+      }
     })
     .catch((err)=>{
       callback(err)

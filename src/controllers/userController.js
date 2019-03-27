@@ -1,5 +1,8 @@
 const userQueries = require("../db/queries.user")
 const passport = require("passport")
+const secretKey = process.env.SECRET_KEY
+const publishableKey = process.env.PUBLISHABLE_KEY
+const stripe = require("stripe")(secretKey)
 
 module.exports = {
   signUp(req, res, next){
@@ -46,6 +49,36 @@ module.exports = {
   signOut(req, res, next){
     req.logout()
     req.flash("notice", "Sign-out successful.")
+    res.redirect("/")
+  },
+
+  upgrade(req, res, next){
+    res.render("user/upgrade", {publishableKey}) //change key
+  },
+
+  payment(req, res, next){
+    let payment = 1500
+    stripe.customers.create({
+      email: req.body.stripeEmail,
+      source: req.body.stripeToken,
+    })
+    .then((customer)=>{
+      stripe.charges.create({
+        amount: payment,
+        description: "Account Upgrade",
+        currency: "USD",
+        customer: customer.id
+      })
+    })
+    .then((charge)=>{
+      userQueries.upgrade(req.user.dataValues.id)
+      res.render("user/payment_success")
+    })
+  },
+
+  downgrade(req, res, next){
+    userQueries.downgrade(req.user.dataValues.id)
+    req.flash("notice", "no longer premium")
     res.redirect("/")
   }
 }
