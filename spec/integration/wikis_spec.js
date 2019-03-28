@@ -13,9 +13,9 @@ describe("routes :  wikis", ()=>{
     .then((res)=>{
       User.create({
         username: "me",
-        email: "me@email.com",
+        email: "admin@email.com",
         password: "123456",
-        role: "standard"
+        role: "premium"
       })
       .then((user)=>{
         this.user = user
@@ -76,7 +76,8 @@ describe("routes :  wikis", ()=>{
         form: {
           title: "New wiki",
           body: "New wiki body",
-          userId: this.user.id
+          userId: this.user.id,
+          private: true
         }
       }
 
@@ -124,6 +125,17 @@ describe("routes :  wikis", ()=>{
       })
       .catch((err)=>{
         console.log(err)
+        done()
+      })
+    })
+  })
+
+  describe("GET /wikis/:id/edit", ()=>{
+    it("should render edit form", (done)=>{
+      request.get(`${base}${this.wiki.id}/edit`,
+      (err, res, body)=>{
+        expect(err).toBeNull()
+        expect(body).toContain("Edit Wiki")
         done()
       })
     })

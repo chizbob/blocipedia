@@ -1,5 +1,5 @@
 const Authorizer = require("../policies/wiki")
-const Wiki = require("./models").Wikis
+const Wiki = require("./models").Wiki
 
 module.exports = {
   getAllWikis(callback){
@@ -19,6 +19,22 @@ module.exports = {
     })
     .catch((err)=>{
       callback(err)
+    })
+  },
+
+  private(id){
+    return Wiki.all()
+    .then((wikis)=>{
+      wikis.forEach((wiki)=>{
+        if(wiki.userId == id && wiki.private == true){
+          wiki.update({
+            private: false
+          })
+        }
+      })
+    })
+    .catch((err)=>{
+      console.log(err)
     })
   },
 

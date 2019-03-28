@@ -1,4 +1,5 @@
-const userQueries = require("../db/queries.user")
+const userQueries = require("../db/queries.users")
+const wikiQueries = require("../db/queries.wikis")
 const passport = require("passport")
 const secretKey = process.env.SECRET_KEY
 const publishableKey = process.env.PUBLISHABLE_KEY

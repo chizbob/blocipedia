@@ -12,6 +12,16 @@ module.exports = {
     })
   },
 
+  privateIndex(req, res, next){
+    wikiQueries.getAllWikis((err, wikis)=>{
+      if(err){
+        res.redirect(500, "static/index")
+      } else {
+        res.render("wikis/private", {wikis})
+      }
+    })
+  },
+
   new(req, res, next){
     const authorized = new Authorizer(req.user).new()
     if(authorized){
@@ -76,6 +86,16 @@ module.exports = {
         res.redirect(401, `/wikis/${req.params.id}/edit`)
       } else {
         res.redirect(`/wikis/${req.params.id}`)
+      }
+    })
+  },
+
+  destroy(req, res, next){
+    wikiQueries.deleteWiki(req, (err, wiki)=>{
+      if(err){
+        res.redirect(err, `/wikis/${req.params.id}`)
+      } else {
+        res.direct(303, "/wikis")
       }
     })
   }
