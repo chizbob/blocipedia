@@ -81,5 +81,17 @@ module.exports = {
     userQueries.downgrade(req.user.dataValues.id)
     req.flash("notice", "no longer premium")
     res.redirect("/")
+  },
+
+  showCollaborations(req, res, next){
+    userQueries.getUser(req.user.id, (err, result)=>{
+      user = result["user"]
+      collaborations = result["collaborations"]
+      if(err || user == null){
+        res.redirect(404, "/")
+      } else {
+        res.render("user/collaborations, {user, collaborations}")
+      }
+    })
   }
 }

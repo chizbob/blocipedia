@@ -33,7 +33,17 @@ module.exports = class ApplicationPolicy {
   }
 
   edit(){
-    return this.new() && this.record && (this._isStandard() || this.is_Premium() || this.is_Admin())
+    if (this.record.private == false){
+    return this.new() &&
+      this.record && (this._isStandard() || this._isPremium() || this._isAdmin());
+    } else if (this.record.private == true){
+      return this.new() &&
+        this.record && (this._isPremium()  || this._isAdmin() || this._isStandard());
+    }
+  }
+
+  showCollaborators(){
+    return this.edit()
   }
 
   update(){
